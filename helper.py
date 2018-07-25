@@ -8,7 +8,6 @@ Created on Tue Jul 24 18:52:19 2018
 
 import numpy as np
 from sklearn.preprocessing import Normalizer
-#import pydriver
 import random
 import os 
 import keras
