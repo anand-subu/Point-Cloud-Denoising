@@ -6,7 +6,6 @@ Created on Tue Jul 24 18:56:53 2018
 @author: anand
 """
 
-from helper import reg_noise,feat_ext
 import numpy as np
 import random
 import os 
@@ -18,7 +17,11 @@ import tensorflow as tf
 import tensorflow.contrib.learn as learn
 from tensorflow.contrib.learn.python.learn.metric_spec import MetricSpec
 import tensorflow.contrib.metrics as tfmetrics
+from open3d import *
 
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--test_pointcloud", required=True,help="path to a testpoint cloud for visualizing results")
+args = vars(ap.parse_args())
 
 
 X_train=np.load('X_train.npy')
@@ -26,7 +29,8 @@ y_train=np.load('y_train.npy')
 
 X_train=np.float32(X_train)
 
-X_train,X_val,y_train,y_val=train_test_split(X_train,y_train,test_size=0.25,random_state=np.random.seed(7))
+X_train,X_val,y_train,y_val=train_test_split(X_train,y_train,test_size=0.2,random_state=np.random.seed(7))
+#X_train,X_test,y_train,y_test=train_test_split(X_train,y_train,test_size=0.2,random_state=np.random.seed(7))
 
 y_train=np.int32(y_train)
 
@@ -92,7 +96,48 @@ classifier.fit(x=X_train,
 #score = classifier.evaluate(x=X_test, y=y_test,metrics={'accuracy': MetricSpec(tfmetrics.streaming_accuracy)})
 #print('Accuracy: {0:f}'.format(score['accuracy']))
 
-#predictions = list(classifier.predict(x=X_test))
 
 
+
+
+
+i=0
+directory="Noisy"
+noiseless=[]
+
+for f in os.listdir(directory):
+    
+    pcd=read_point_cloud(os.path.join(directory,f))
+    feat=X_train[i]
+    predictions = np.asarray(list(classifier.predict(x=feat)))
+    points=pcd.points
+    points=np.array(points)
+    
+    for i in range(len(points)):
+        if predictions[i]==0:
+            noiseless.append(points[i])
+    
+    noiseless=np.asarray(noiseless)
+    
+    noiseless_pcd=PointCloud()
+    
+    noiseless_pcd.points=Vector3dVector(noiseless)
+    
+    draw_geometries([pcd]) #noisy point cloud
+    draw_geometries([noiseless_pcd]) #noiseless point cloud
+    
+    
+    
+    
+            
+            
+            
+            
+    
+    
+    
+    
+    
+    
+        
 
