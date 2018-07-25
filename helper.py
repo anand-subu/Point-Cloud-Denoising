@@ -8,11 +8,11 @@ Created on Tue Jul 24 18:52:19 2018
 
 import numpy as np
 from sklearn.preprocessing import Normalizer
-
+#import pydriver
 import random
 import os 
 import keras
-
+import argparse
 import open3d
 from open3d import *
 from scipy.cluster.vq import *
@@ -51,9 +51,9 @@ def feat_ext(thisdir):
         points_temp=points
         
         pcd.points=Vector3dVector(points)
-        
-        
-        
+
+        write_point_cloud(os.path.join("Noisy",f)+'_noisy.pcd',pcd)
+
         
         labels_temp=np.zeros((1,(len(points)-len(noise))),dtype=int)
         labels_temp=np.append(labels_temp,np.ones((1,len(noise)),dtype=int))
@@ -75,7 +75,7 @@ def feat_ext(thisdir):
                 pc_features[i][w] += 1
 
         pc_features=pc_features/np.max(pc_features)
-    
+        
         for i in range(len(points_temp)):
             t=feat[i]
             t.resize((1,33))
