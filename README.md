@@ -17,17 +17,19 @@ The dataset isn't included here, but can be downloaded at https://rgbd-dataset.c
 
 # Structure
 
-After cloning this git and making sure your requirments are fine, create a folder called 'training' and move youI r training data as .pcd files here. 
+1) After cloning this git and making sure your requirments are fine, create a folder called 'training' and move your training data as .pcd files here. 
 
-Create another folder, 'Noisy', to store the training point clouds with noise addfoed to them. By default, no of noise points to be added is set at 2000. I found that this was a good start to let the network generalize to dense noise.
+2) Create another folder, 'Noisy', to store the training point clouds with noise added to them. By default, no of noise points to be added is set at 2000. I found that this was a good start to let the network generalize to dense noise.
 
-Run helper.py with the arguement --i which is the path to the directory holding your training files. The module performs feature extraction and saves the training data as .npy arrays, and saves the noisy point clouds.
+3) Run helper.py with the choice --i which is the path to the directory holding your training files. The module performs feature extraction and saves the training data as .npy arrays, and saves the noisy point clouds as well.
 
-Before starting training, store point clouds you wish to perform testing on, in another folder 'Testing'.
+4) Before starting training, store point clouds you wish to perform testing on, in another folder 'Testing'.
 
-Run training.py to start training the NN using tensorflow. The training converges pretty quickly,for the training set, but has a harder job in general with points with irregular orientations/objects with large gaps between them.
+5) Run training.py to start training the NN using tensorflow. The training converges pretty quickly,for the training set, but has a harder job in general with points with irregular orientations/objects with large gaps between them.
 
-The program also shows the visualization of the point clouds with noise added, and after removing the noise with the trained model. Heads up here though, the original point clouds come with RGB data included, so the points are assigned a natural color as they are scanned. I discard the color information wrt training and data storage, so visualization after removing noise will show default colors that Open3D's visualization is set to.
+6)The program also shows the visualization of the point clouds with noise added, and after removing the noise with the trained model. 
+
+Heads up here though, the original point clouds come with RGB data included, so the points are assigned a natural color as they are scanned. I discard the color information wrt training and data storage, so visualization after removing noise will show default colors that Open3D's visualization is set to.
 
 
 
