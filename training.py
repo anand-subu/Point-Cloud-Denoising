@@ -9,7 +9,6 @@ Created on Tue Jul 24 18:56:53 2018
 import numpy as np
 import random
 import os 
-import argparse
 from sklearn.preprocessing import Normalizer,StandardScaler
 from sklearn.model_selection import train_test_split
 from logging import StreamHandler, INFO, getLogger
@@ -19,9 +18,7 @@ from tensorflow.contrib.learn.python.learn.metric_spec import MetricSpec
 import tensorflow.contrib.metrics as tfmetrics
 from open3d import *
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--test_pointcloud", required=True,help="path to a testpoint cloud for visualizing results")
-args = vars(ap.parse_args())
+
 
 
 X_train=np.load('X_train.npy')
