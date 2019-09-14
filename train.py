@@ -48,4 +48,4 @@ if __name__ == "__main__":
                         batch_size=64,
                         shuffle=True,
                         validation_split=0.2)
-    model.save("final_weights.h5")
+    model.save("final_model.h5")
