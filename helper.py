@@ -3,10 +3,13 @@ import numpy as np
 import random
 import os
 import pyntcloud
-
 from tqdm import tqdm
 from sklearn.preprocessing import Normalizer
 from open3d import *
+from keras.layers import Input, Dense, Dropout
+from keras.models import Model
+from keras.models import load_model
+from keras.layers.normalization import BatchNormalization
 
 
 def reg_noise(pts,num_of_points):
@@ -45,7 +48,7 @@ def inference_feature_extraction(point_cloud_path,feature_flag):
         return features
         
     elif feature_flag == "global":
-             
+        features_global=[]
         point_cloud = read_point_cloud(point_cloud_path)
         estimate_normals(point_cloud,KDTreeSearchParamHybrid(radius=0.01,max_nn=30))
         fpfh_features = compute_fpfh_feature(point_cloud,KDTreeSearchParamHybrid(radius=0.05,max_nn=50))
@@ -54,10 +57,10 @@ def inference_feature_extraction(point_cloud_path,feature_flag):
 
         voxel_features=voxel_occupancy_features(point_cloud_path)
 
-        for idx,item in enumerate(features):
-            features[idx] = np.append(item,voxel_features,axis=0)
+        for item in features:
+            features_global.append(np.append(item,voxel_features,axis=0))
    
-        return features
+        return np.array(features_global)
     
 
 def feature_extraction(directory,num_of_noise_points=1000):
@@ -168,3 +171,33 @@ def feature_extraction_with_voxel_occupancy(directory,num_of_noise_points=1000):
     X_train=np.array(features)
     y_train=labels.astype(int)
     return X_train,y_train
+
+def denoise_point_cloud(model_file,directory,save_dir,feature_type):
+
+    """
+    Method for performing inference and denoising the point clouds
+    """
+
+    
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
+    model = load_model(model_file)
+    files = os.listdir(directory)
+    
+    print("Denoising the point clouds...")
+    
+    for file in tqdm(files):
+        
+        point_cloud = read_point_cloud(os.path.join(directory,file))
+        feature_ext = inference_feature_extraction(os.path.join(directory,file),feature_type)
+        points = np.asarray(point_cloud.points)
+                
+        predicted_pts = model.predict(feature_ext)
+        predicted_pts =(predicted_pts>0.5).astype(int)
+        
+        points_copy = [value for value,pred in zip(points,predicted_pts) if pred == 0]
+        
+        point_cloud.points  = Vector3dVector(points_copy)
+        
+        write_point_cloud(os.path.join(save_dir,file),point_cloud)
+
