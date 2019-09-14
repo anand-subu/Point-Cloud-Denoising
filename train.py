@@ -47,5 +47,5 @@ if __name__ == "__main__":
                         epochs=1,
                         batch_size=64,
                         shuffle=True,
-                        validation_split=0.2)
+                        validation_data=(X_test,y_test))
     model.save("final_model.h5")
