@@ -21,9 +21,8 @@ Notes:
  following a uniform distribution.
  
 * Visualization of a noisy point cloud generated through this process yields noise points that may be spread far apart from the
-original dense point cloud, making them  easily separable during the  model training due to the separability of the features calculated
-for the points. Observations while training and testing prove this may be the case as model converges fast whilst yielding high accuracy, precision and recall
-for the classes.
+original dense point cloud, making them  easily separable during the  model training due to the separability of the features calculated for the points. 
+* Observations while training and testing prove this may be the case as model converges fast whilst yielding high accuracy, precision and recall. This is in all possibility due to the simplicity of the noise points generated, leading to easy separability and the point clouds that I experimented with (Kinect point clouds from a link mentioned below).
 
 ### Steps for training
 1) Run as 
