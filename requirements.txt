@@ -1,0 +1,4 @@
+tqdm
+argparse
+open3d-python
+pyntcloud
