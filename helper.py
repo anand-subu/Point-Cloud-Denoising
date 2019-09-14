@@ -4,7 +4,6 @@ import random
 import os
 import pyntcloud
 from tqdm import tqdm
-from sklearn.preprocessing import Normalizer
 from open3d import *
 from keras.layers import Input, Dense, Dropout
 from keras.models import Model
@@ -126,7 +125,7 @@ def voxel_occupancy_features(point_cloud_path,n_X=8,n_Y=8,n_Z=8):
     return density_feature_vector
 
 
-def feature_extraction_with_voxel_occupancy(directory,num_of_noise_points=1000):
+def feature_extraction_with_voxel_occupancy(directory,voxel_size,num_of_noise_points=1000):
     
     """
     Method to extract features along with voxel occupancy for 
@@ -161,7 +160,7 @@ def feature_extraction_with_voxel_occupancy(directory,num_of_noise_points=1000):
         feature = source.data.T
         feature = feature/np.max(feature)
 
-        voxel_features=voxel_occupancy_features(os.path.join(directory,file))
+        voxel_features=voxel_occupancy_features(os.path.join(directory,file),voxel_size[0],voxel_size[1],voxel_size[2])
 
         for item in feature:
 
