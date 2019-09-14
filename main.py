@@ -21,17 +21,13 @@ if __name__ == "__main__":
     if args.train_with_global_features:
         
         model=define_model(input_size=545)
-        
         X_train,y_train=feature_extraction_with_voxel_occupancy(args.train_directory,1000)
-
         X_test,y_test=feature_extraction_with_voxel_occupancy(args.test_directory,1000)
         
     if args.train_with_local_features:
         
         model=define_model(input_size=33)
-        
         X_train,y_train=feature_extraction(args.train_directory)
-
         X_test,y_test=feature_extraction(args.test_directory)
 
     model.compile(optimizer='adam', loss='binary_crossentropy',metrics=['accuracy'])
