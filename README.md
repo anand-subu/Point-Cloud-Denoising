@@ -26,19 +26,20 @@ for the points. Observations while training and testing prove this may be the ca
 for the classes.
 
 ### Steps for training
+1) Run as 
 ```
-1) Run pip install -r requirements.txt
-
+ pip install -r requirements.txt
+```
 This code requires keras(2.2.4) and tensorflow(1.10.0)
-```
+
 2) For training the model, point clouds in formats that open3d is able to parse, are supported. I've experimented with Kinect point clouds (https://rgbd-dataset.cs.washington.edu/) but any format/type is supported for this purpose.
 
 The file train.py takes the following parameters:
-  --train_with_local_features (Boolean) : If set to True, this option extracts only local features (FPFH) and trains the MLP
-  --train_with_global_features (Boolean) : If set to True, this option extracts FPFH and voxel occupancy for a point cloud, and append the voxel occupancy feature vector to each FPFH feature vector. By default the voxel dimensions are 8x8x8 and the FPFH parameters are set as radius = 0.05 and max nearest neighbours = 50 inside helper.py. 
-  --voxel_size : argument required only if train_with_global_features is set to True. Takes input dimensions x,y,z as comma separated string.
-  --train_directory : path to directory with point clouds for training
-  --test_directory : path to directory with point clouds for testing
+ * --train_with_local_features (Boolean) : If set to True, this option extracts only local features (FPFH) and trains the MLP
+ * --train_with_global_features (Boolean) : If set to True, this option extracts FPFH and voxel occupancy for a point cloud, and append the voxel occupancy feature vector to each FPFH feature vector. By default the voxel dimensions are 8x8x8 and the FPFH parameters are set as radius = 0.05 and max nearest neighbours = 50 inside helper.py. 
+ * --voxel_size : argument required only if train_with_global_features is set to True. Takes input dimensions x,y,z as comma separated string.
+ * --train_directory : path to directory with point clouds for training
+ * --test_directory : path to directory with point clouds for testing
 ```  
   For training with local features, run as: python train.py --train_with_local_features True \ 
                                                             --train_directory <path to train directory>\
